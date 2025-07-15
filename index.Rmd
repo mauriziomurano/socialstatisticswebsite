@@ -1,0 +1,26 @@
+---
+title: "Home - Benvenuti!"
+output: html_document
+---
+
+# Benvenuti sul Mio Sito di Grafici R!
+
+Questo sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+
+---
+
+## Grafico di Esempio: Distribuzione del Carburante
+
+Ecco un semplice istogramma per iniziare, che mostra la distribuzione delle miglia per gallone (MPG) nel dataset `mtcars`.
+
+```{r mpg-histogram, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5}
+# Carica la libreria necessaria
+library(ggplot2)
+
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 3, fill = "steelblue", color = "white") +
+  labs(title = "Distribuzione delle Miglia per Gallone (MPG)",
+       x = "Miglia per Gallone",
+       y = "Frequenza") +
+  theme_minimal()
+```
