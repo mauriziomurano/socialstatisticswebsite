@@ -3,25 +3,30 @@ title: "Statistiche Sociali e Geopolitiche"
 output: html_document
 ---
 
-## Benvenuti sul Mio Sito di Grafici R!
+## Dati e strumenti per interpretare dinamiche sociali e globali
 
-WWQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica, con l’obiettivo di promuovere un approccio empirico allo studio delle trasformazioni contemporanee. Uno spazio per ricercatori, studenti e cittadini interessati ai dati come strumento di conoscenza.
 
 ---
 
-## Grafico di Esempio: Distribuzione del Carburante
+## Economia Italiana Anno 2024
 
-Ecco un semplice istogramma per iniziare, che mostra la distribuzione delle miglia per gallone (MPG) nel dataset `mtcars`.
+Il grafico mette a confronto i principali indicatori economici relativi agli Stati Uniti e all’Italia, includendo le esportazioni totali negli USA, le esportazioni complessive italiane, il prodotto interno lordo italiano, le importazioni totali e gli investimenti.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="center"}
+Questa rappresentazione aiuta a comprendere le dimensioni relative di queste grandezze economiche e il ruolo fondamentale delle esportazioni e degli investimenti nello sviluppo economico.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
 
 library(ggplot2)
+library(tibble)
 
-# Dati
-dataset <- data.frame(
-  Categoria = c("Incidenti Stradali", "Malattie Cardiovascolari", "Tumori",
-                "Incidenti Domestici", "Altre Cause"),
-  Valore = c(15.2, 30.5, 25.1, 8.7, 20.5)
+dataset <- tribble(
+  ~Categoria,           ~Valore,
+  "Esport Tot in USA",  64.8,
+  "Esport Tot",         623.5,
+  "PIL",                2192.2,
+  "Importazioni Tot",   568.7 ,
+  "Investimenti",       370
 )
 
 colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
@@ -33,7 +38,7 @@ dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
 ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
   geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
   geom_text(
-    aes(label = paste0(Valore, "%")),
+    aes(label = Valore),
     vjust = -0.7,
     size = 4,
     family = "Arial"
@@ -42,7 +47,7 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
-    name = "Valore Medio Annuo (%)"
+    name = "Milardi di €"
   ) +
   labs(x = NULL) +
   theme_minimal(base_family = "Arial") +
@@ -51,9 +56,79 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "lightgrey", linetype = "dotted"),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
-    axis.text.y = element_text(size = 9, color = "grey20"),
-    axis.title.y = element_text(size = 12, color = "black", face = "bold"),
-    plot.margin = margin(t = 20, r = 20, b = 60, l = 50)
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
+    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
   )
-
 ```
+
+---
+
+## Tendenze dei Matrimoni in Italia
+
+Esplora le profonde trasformazioni sociali che hanno interessato l'Italia attraverso l'analisi dei dati sui matrimoni. Questo grafico illustra il costante declino del numero di unioni, partendo dalle medie del dopoguerra (1946-1970) fino al dato del 2023. Una rappresentazione chiara che evidenzia i cambiamenti demografici, culturali ed economici che stanno ridefinendo la struttura della famiglia e delle relazioni nel nostro paese.
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
+
+library(ggplot2)
+library(tibble)
+
+dataset <- tribble(
+  ~Categoria,           ~Valore,
+  "Media 1946-1970",  400,
+  "1990",             290,
+  "2000",             284,
+  "2010",             217,
+  "2023",             184
+)
+
+colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
+
+# Ordina per categoria (come in plotly)
+dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
+
+# Grafico statico
+ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
+  geom_text(
+    aes(label = Valore),
+    vjust = -0.7,
+    size = 4,
+    family = "Arial"
+  ) +
+  scale_fill_manual(values = colori_pastello) +
+  scale_y_continuous(
+    limits = c(0, max(dataset$Valore) * 1.15),
+    expand = c(0, 0),
+    name = "Mila Unità"
+  ) +
+  labs(x = NULL) +
+  theme_minimal(base_family = "Arial") +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "lightgrey", linetype = "dotted"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
+    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
+  )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

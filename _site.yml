@@ -1,12 +1,12 @@
 name: "socialstatisticswebsite"
 navbar:
-  title: "I Miei Grafici R"
+  title: "SOCIAL STATISTICS"
   left:
     - text: "Home"
       href: index.html
-    - text: "Grafico Serie Storiche"
+    - text: "Articoli Precedenti"
       href: grafico_uno.html
-    - text: "Grafico a Barre"
+    - text: "Archivio"
       href: grafico_due.html
   right:
     - icon: fa-github
