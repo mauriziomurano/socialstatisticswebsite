@@ -5,7 +5,7 @@ output: html_document
 
 ## Benvenuti sul Mio Sito di Grafici R!
 
-Questo sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+CCQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
 
 ---
 
@@ -52,20 +52,23 @@ grafico <- plot_ly(
       text = "",
       font = list(color = 'black', size = 20, family = "Arial")
     ),
-    xaxis = list(
-      title = "",
-      tickvals = ~Categoria,
-      ticktext = ~Categoria,
-      showticklabels = TRUE,
-      tickangle = -45,
-      titlefont = list(color = "black"),
-      tickfont = list(color = "darkgrey", size = 12),
-      showgrid = FALSE,
-      showline = TRUE,
-      linecolor = 'lightgrey',
-      linewidth = 1,
-      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE X
-    ),
+    xxaxis = list(
+    title = "",
+    tickangle = 0,  # <-- Etichette dritte
+    automargin = TRUE,  # <-- Fa spazio in automatico
+    tickfont = list(size = 10),
+    tickvals = dataset$Categoria,
+    ticktext = lapply(dataset$Categoria, function(x) {
+      if (nchar(x) > 14) {
+        paste(strwrap(x, width = 12), collapse = "<br>")  # Va a capo sulle etichette lunghe
+      } else {
+        x
+      }
+    }),
+    showline = FALSE,
+    showgrid = FALSE,
+    fixedrange = TRUE
+  ),
     yaxis = list(
       title = "Valore Medio Annuo (%)",
       titlefont = list(color = "black", size = 14),
