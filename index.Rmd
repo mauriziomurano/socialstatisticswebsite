@@ -5,7 +5,7 @@ output: html_document
 
 ## Benvenuti sul Mio Sito di Grafici R!
 
-RRQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+WWQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
 
 ---
 
@@ -13,18 +13,11 @@ RRQuesto sito è una dimostrazione di come è possibile pubblicare grafici gener
 
 Ecco un semplice istogramma per iniziare, che mostra la distribuzione delle miglia per gallone (MPG) nel dataset `mtcars`.
 
-```{r mpg-histogram, echo=FALSE, message=FALSE, warning=FALSE, fig.width=5, fig.height=4}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="center"}
 
-# Carica le librerie necessarie
-library(plotly)
-library(dplyr)
-library(tidyr)
 library(ggplot2)
-library(RColorBrewer)
-library(plotly)
 
-# Dati di esempio (Sostituisci con il tuo 'dataset' reale)
-set.seed(123)
+# Dati
 dataset <- data.frame(
   Categoria = c("Incidenti Stradali", "Malattie Cardiovascolari", "Tumori",
                 "Incidenti Domestici", "Altre Cause"),
@@ -33,79 +26,34 @@ dataset <- data.frame(
 
 colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
 
-grafico <- plot_ly(
-  data = dataset,
-  x = ~Categoria,
-  y = ~Valore,
-  type = 'bar',
-  color = ~Categoria,
-  colors = colori_pastello,
-  text = ~paste('Categoria: ', Categoria, '<br>Valore Medio Annuo: ', round(Valore, 2), '%'),
-  hoverinfo = 'text',
-  marker = list(
-    line = list(color = 'rgba(0, 0, 0, 0.3)', width = 1.5),
-    opacity = 0.9
-  )
-) %>%
-  layout(
-    title = list(
-      text = "",
-      font = list(color = 'black', size = 20, family = "Arial")
-    ),
-    xaxis = list(
-      title = "",
-      tickvals = ~Categoria,
-      ticktext = ~Categoria,
-      showticklabels = TRUE,
-      tickangle = -45,
-      titlefont = list(color = "black"),
-      tickfont = list(color = "darkgrey", size = 12),
-      showgrid = FALSE,
-      showline = TRUE,
-      linecolor = 'lightgrey',
-      linewidth = 1,
-      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE X
-    ),
-    yaxis = list(
-      title = "Valore Medio Annuo (%)",
-      titlefont = list(color = "black", size = 14),
-      tickfont = list(color = "darkgrey", size = 11),
-      showgrid = TRUE,
-      zeroline = TRUE,
-      gridcolor = 'lightgrey',
-      zerolinecolor = 'lightgrey',
-      showline = TRUE,
-      linecolor = 'lightgrey',
-      linewidth = 1,
-      rangemode = 'tozero',
-      gridwidth = 0.8,
-      griddash = "dot",
-      range = c(0, max(dataset$Valore) * 1.15),
-      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE Y
-    ),
-    plot_bgcolor = 'white',
-    paper_bgcolor = 'white',
-    showlegend = FALSE,
-    margin = list(
-      b = 100,
-      t = 30,
-      l = 60,
-      r = 30
-    ),
-    annotations = lapply(1:nrow(dataset), function(i) {
-      list(
-        x = dataset$Categoria[i],
-        y = dataset$Valore[i] + (max(dataset$Valore) * 0.05),
-        text = paste0(round(dataset$Valore[i], 1), "%"),
-        showarrow = FALSE,
-        font = list(color = "black", size = 12, family = "Arial", weight = "bold"),
-        align = 'center',
-        valign = 'bottom'
-      )
-    })
-  ) %>%
-  config(displayModeBar = FALSE)
+# Ordina per categoria (come in plotly)
+dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
 
-# Visualizza il grafico (ora non più zoomabile)
-grafico
+# Grafico statico
+ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
+  geom_text(
+    aes(label = paste0(Valore, "%")),
+    vjust = -0.7,
+    size = 4,
+    family = "Arial"
+  ) +
+  scale_fill_manual(values = colori_pastello) +
+  scale_y_continuous(
+    limits = c(0, max(dataset$Valore) * 1.15),
+    expand = c(0, 0),
+    name = "Valore Medio Annuo (%)"
+  ) +
+  labs(x = NULL) +
+  theme_minimal(base_family = "Arial") +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "lightgrey", linetype = "dotted"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
+    axis.text.y = element_text(size = 9, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "bold"),
+    plot.margin = margin(t = 20, r = 20, b = 60, l = 50)
+  )
+
 ```
