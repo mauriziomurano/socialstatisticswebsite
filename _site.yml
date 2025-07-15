@@ -1,24 +1,23 @@
-# _site.yml
-name: "my_r_graphs_website" # Nome della cartella di output (il tuo sito compilato andrà qui)
+name: "my_r_graphs_website"
 navbar:
-  title: "I Miei Grafici R" # Titolo che appare nella barra di navigazione
-  left: # Elementi a sinistra nella barra di navigazione
+  title: "I Miei Grafici R"
+  left:
     - text: "Home"
-      href: index.Rmd
+      href: index.html       # <-- CORRETTO
     - text: "Grafico Serie Storiche"
-      href: grafico_uno.Rmd
+      href: grafico_uno.html # <-- CORRETTO
     - text: "Grafico a Barre"
-      href: grafico_due.Rmd
-  right: # Elementi a destra nella barra di navigazione (opzionale)
+      href: grafico_due.html # <-- CORRETTO
+  right:
     - text: "GitHub"
       href: https://github.com/tuo_profilo # Sostituisci con il tuo profilo GitHub se ne hai uno
 
-output_dir: "_site" # La cartella dove verranno generati i file HTML del tuo sito
-exclude: [] # Qui puoi elencare file o cartelle da escludere dalla compilazione (es. file di dati temporanei)
+output_dir: "_site"
+exclude: []
 
 output:
   html_document:
-    theme: cosmo # Scegli un tema (es. 'cosmo', 'flatly', 'united', 'lumen', 'simplex')
-    css: styles.css # Collega il file CSS per la personalizzazione
-    toc: true # Abilita l'indice dei contenuti (Table of Contents) per ogni pagina
-    toc_depth: 2 # Fino a quale livello di titolo l'indice deve scendere
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc_depth: 2
