@@ -5,7 +5,7 @@ output: html_document
 
 ## Benvenuti sul Mio Sito di Grafici R!
 
-AAQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+Questo sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
 
 ---
 
@@ -13,7 +13,7 @@ AAQuesto sito è una dimostrazione di come è possibile pubblicare grafici gener
 
 Ecco un semplice istogramma per iniziare, che mostra la distribuzione delle miglia per gallone (MPG) nel dataset `mtcars`.
 
-```{r mpg-histogram, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 # Carica le librerie necessarie
 library(plotly)
