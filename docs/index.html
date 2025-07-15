@@ -11,7 +11,7 @@
 
 
 
-<title>Home - Benvenuti!</title>
+<title>Statistiche Sociali e Geopolitiche</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -32,6 +32,14 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -256,7 +264,7 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/mauriziomurano/mionovosito">
+  <a href="https://github.com/mauriziomurano/socialstatisticswebsite">
     <span class="fa fa-github"></span>
      
   </a>
@@ -270,25 +278,26 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home - Benvenuti!</h1>
+<h1 class="title toc-ignore">Statistiche Sociali e Geopolitiche</h1>
 
 </div>
 
 
-<div id="benvenuti-sul-mio-sito-di-grafici-r" class="section level1">
-<h1>Benvenuti sul Mio Sito di Grafici R!</h1>
+<div id="benvenuti-sul-mio-sito-di-grafici-r" class="section level2">
+<h2>Benvenuti sul Mio Sito di Grafici R!</h2>
 <p>Questo sito è una dimostrazione di come è possibile pubblicare
 grafici generati con R direttamente su una pagina web. Ogni pagina
 contiene un grafico diverso, creato con la potenza di R e le sue
 librerie di visualizzazione dati.</p>
 <hr />
+</div>
 <div id="grafico-di-esempio-distribuzione-del-carburante"
 class="section level2">
 <h2>Grafico di Esempio: Distribuzione del Carburante</h2>
 <p>Ecco un semplice istogramma per iniziare, che mostra la distribuzione
 delle miglia per gallone (MPG) nel dataset <code>mtcars</code>.</p>
-<p><img src="index_files/figure-html/mpg-histogram-1.png" width="768" /></p>
-</div>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-a7e9eea642e00667db67" style="width:768px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-a7e9eea642e00667db67">{"x":{"visdat":{"2cf42e3958d2":["function () ","plotlyVisDat"]},"cur_data":"2cf42e3958d2","attrs":{"2cf42e3958d2":{"x":{},"y":{},"text":{},"hoverinfo":"text","marker":{"line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"color":{},"colors":["#AEC7E8","#FFBB78","#98DF8A","#FF9896","#C5B0D5"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":100,"l":60,"t":30,"r":30},"title":{"text":"","font":{"color":"black","size":20,"family":"Arial"}},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":["Incidenti Stradali","Malattie Cardiovascolari","Tumori","Incidenti Domestici","Altre Cause"],"ticktext":["Incidenti Stradali","Malattie Cardiovascolari","Tumori","Incidenti Domestici","Altre Cause"],"showticklabels":true,"tickangle":-45,"titlefont":{"color":"black"},"tickfont":{"color":"darkgrey","size":12},"showgrid":false,"showline":true,"linecolor":"lightgrey","linewidth":1},"yaxis":{"domain":[0,1],"automargin":true,"title":"Valore Medio Annuo (%)","titlefont":{"color":"black","size":14},"tickfont":{"color":"darkgrey","size":11},"showgrid":true,"zeroline":true,"gridcolor":"lightgrey","zerolinecolor":"lightgrey","showline":true,"linecolor":"lightgrey","linewidth":1,"rangemode":"tozero","gridwidth":0.80000000000000004,"griddash":"dot","range":[0,35.074999999999996]},"plot_bgcolor":"white","paper_bgcolor":"white","showlegend":false,"annotations":[{"x":"Incidenti Stradali","y":16.724999999999998,"text":"15.2%","showarrow":false,"font":{"color":"black","size":12,"family":"Arial","weight":"bold"},"align":"center","valign":"bottom"},{"x":"Malattie Cardiovascolari","y":32.024999999999999,"text":"30.5%","showarrow":false,"font":{"color":"black","size":12,"family":"Arial","weight":"bold"},"align":"center","valign":"bottom"},{"x":"Tumori","y":26.625,"text":"25.1%","showarrow":false,"font":{"color":"black","size":12,"family":"Arial","weight":"bold"},"align":"center","valign":"bottom"},{"x":"Incidenti Domestici","y":10.225,"text":"8.7%","showarrow":false,"font":{"color":"black","size":12,"family":"Arial","weight":"bold"},"align":"center","valign":"bottom"},{"x":"Altre Cause","y":22.024999999999999,"text":"20.5%","showarrow":false,"font":{"color":"black","size":12,"family":"Arial","weight":"bold"},"align":"center","valign":"bottom"}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":["Altre Cause"],"y":[20.5],"text":"Categoria:  Altre Cause <br>Valore Medio Annuo:  20.5 %","hoverinfo":"text","marker":{"color":"rgba(174,199,232,1)","line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"type":"bar","name":"Altre Cause","textfont":{"color":"rgba(174,199,232,1)"},"error_y":{"color":"rgba(174,199,232,1)"},"error_x":{"color":"rgba(174,199,232,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Incidenti Domestici"],"y":[8.6999999999999993],"text":"Categoria:  Incidenti Domestici <br>Valore Medio Annuo:  8.7 %","hoverinfo":"text","marker":{"color":"rgba(255,187,120,1)","line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"type":"bar","name":"Incidenti Domestici","textfont":{"color":"rgba(255,187,120,1)"},"error_y":{"color":"rgba(255,187,120,1)"},"error_x":{"color":"rgba(255,187,120,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Incidenti Stradali"],"y":[15.199999999999999],"text":"Categoria:  Incidenti Stradali <br>Valore Medio Annuo:  15.2 %","hoverinfo":"text","marker":{"color":"rgba(152,223,138,1)","line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"type":"bar","name":"Incidenti Stradali","textfont":{"color":"rgba(152,223,138,1)"},"error_y":{"color":"rgba(152,223,138,1)"},"error_x":{"color":"rgba(152,223,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Malattie Cardiovascolari"],"y":[30.5],"text":"Categoria:  Malattie Cardiovascolari <br>Valore Medio Annuo:  30.5 %","hoverinfo":"text","marker":{"color":"rgba(255,152,150,1)","line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"type":"bar","name":"Malattie Cardiovascolari","textfont":{"color":"rgba(255,152,150,1)"},"error_y":{"color":"rgba(255,152,150,1)"},"error_x":{"color":"rgba(255,152,150,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Tumori"],"y":[25.100000000000001],"text":"Categoria:  Tumori <br>Valore Medio Annuo:  25.1 %","hoverinfo":"text","marker":{"color":"rgba(197,176,213,1)","line":{"color":"rgba(0, 0, 0, 0.3)","width":1.5},"opacity":0.90000000000000002},"type":"bar","name":"Tumori","textfont":{"color":"rgba(197,176,213,1)"},"error_y":{"color":"rgba(197,176,213,1)"},"error_x":{"color":"rgba(197,176,213,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 
 
