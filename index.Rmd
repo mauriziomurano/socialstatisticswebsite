@@ -5,7 +5,7 @@ output: html_document
 
 ## Benvenuti sul Mio Sito di Grafici R!
 
-Questo sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+AAQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
 
 ---
 
@@ -63,7 +63,8 @@ grafico <- plot_ly(
       showgrid = FALSE,
       showline = TRUE,
       linecolor = 'lightgrey',
-      linewidth = 1
+      linewidth = 1,
+      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE X
     ),
     yaxis = list(
       title = "Valore Medio Annuo (%)",
@@ -79,7 +80,8 @@ grafico <- plot_ly(
       rangemode = 'tozero',
       gridwidth = 0.8,
       griddash = "dot",
-      range = c(0, max(dataset$Valore) * 1.15)
+      range = c(0, max(dataset$Valore) * 1.15),
+      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE Y
     ),
     plot_bgcolor = 'white',
     paper_bgcolor = 'white',
@@ -104,5 +106,6 @@ grafico <- plot_ly(
   ) %>%
   config(displayModeBar = FALSE)
 
+# Visualizza il grafico (ora non più zoomabile)
 grafico
 ```
