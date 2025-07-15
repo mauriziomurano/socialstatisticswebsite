@@ -5,7 +5,7 @@ output: html_document
 
 ## Benvenuti sul Mio Sito di Grafici R!
 
-CCQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
+RRQuesto sito è una dimostrazione di come è possibile pubblicare grafici generati con R direttamente su una pagina web. Ogni pagina contiene un grafico diverso, creato con la potenza di R e le sue librerie di visualizzazione dati.
 
 ---
 
@@ -13,7 +13,7 @@ CCQuesto sito è una dimostrazione di come è possibile pubblicare grafici gener
 
 Ecco un semplice istogramma per iniziare, che mostra la distribuzione delle miglia per gallone (MPG) nel dataset `mtcars`.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r mpg-histogram, echo=FALSE, message=FALSE, warning=FALSE, fig.width=5, fig.height=4}
 
 # Carica le librerie necessarie
 library(plotly)
@@ -52,23 +52,20 @@ grafico <- plot_ly(
       text = "",
       font = list(color = 'black', size = 20, family = "Arial")
     ),
-    xxaxis = list(
-    title = "",
-    tickangle = 0,  # <-- Etichette dritte
-    automargin = TRUE,  # <-- Fa spazio in automatico
-    tickfont = list(size = 10),
-    tickvals = dataset$Categoria,
-    ticktext = lapply(dataset$Categoria, function(x) {
-      if (nchar(x) > 14) {
-        paste(strwrap(x, width = 12), collapse = "<br>")  # Va a capo sulle etichette lunghe
-      } else {
-        x
-      }
-    }),
-    showline = FALSE,
-    showgrid = FALSE,
-    fixedrange = TRUE
-  ),
+    xaxis = list(
+      title = "",
+      tickvals = ~Categoria,
+      ticktext = ~Categoria,
+      showticklabels = TRUE,
+      tickangle = -45,
+      titlefont = list(color = "black"),
+      tickfont = list(color = "darkgrey", size = 12),
+      showgrid = FALSE,
+      showline = TRUE,
+      linecolor = 'lightgrey',
+      linewidth = 1,
+      fixedrange = TRUE # <-- AGGIUNTO PER BLOCCARE L'ASSE X
+    ),
     yaxis = list(
       title = "Valore Medio Annuo (%)",
       titlefont = list(color = "black", size = 14),
