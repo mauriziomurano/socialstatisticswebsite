@@ -1,4 +1,4 @@
-name: "socialstatisticswebsite"
+name: "mionovosito" # Puoi cambiare questo nome, sarà anche il nome del tuo repository su GitHub
 navbar:
   title: "I Miei Grafici R"
   left:
@@ -10,9 +10,9 @@ navbar:
       href: grafico_due.html
   right:
     - icon: fa-github
-      href: https://github.com/mauriziomurano/socialstatisticswebsite
+      href: https://github.com/mauriziomurano/mionovosito # <<< IMPORTANTE: Questo sarà il nuovo URL del tuo sito GitHub Pages
 output:
   html_document:
     theme: cosmo
     highlight: textmate
-output_dir: "docs"
+    # NON METTERE output_dir: "." o altre direttive qui per ora
