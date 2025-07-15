@@ -1,0 +1,45 @@
+---
+title: "Grafico Serie Storiche"
+output: html_document
+---
+
+# Andamento dei Valori nel Tempo
+
+Questo grafico mostra l'andamento di due variabili campione nel tempo, rendendole interattive grazie a `plotly`. Puoi passare il mouse sui punti per vedere i dettagli, zoomare e selezionare aree.
+
+```{r time-series-plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=6}
+# Carica tutte le librerie necessarie per questo chunk/pagina
+library(ggplot2)
+library(plotly)
+library(dplyr)
+library(lubridate)
+library(tidyr) # <--- QUESTA MANCAVA ORA LA AGGIUNGO PER PIVOT_LONGER
+
+# Creiamo alcuni dati di esempio per una serie storica
+set.seed(123)
+data_series <- tibble(
+  date = seq(ymd("2023-01-01"), ymd("2023-12-31"), by = "month"),
+  value_A = cumsum(rnorm(12, mean = 10, sd = 2)),
+  value_B = cumsum(rnorm(12, mean = 8, sd = 3))
+) %>%
+  pivot_longer(
+    cols = starts_with("value"),
+    names_to = "variable",
+    values_to = "value"
+  )
+
+# Creiamo il grafico con ggplot2
+p <- ggplot(data_series, aes(x = date, y = value, color = variable, group = variable)) +
+  geom_line(size = 1) +
+  geom_point(size = 2, alpha = 0.8) +
+  labs(title = "Andamento Mensile delle Variabili A e B",
+       x = "Data",
+       y = "Valore",
+       color = "Variabile") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# Convertiamo in plotly per l'interattività
+ggplotly(p) %>%
+  layout(hovermode = "x unified") # Migliora il tooltip
+```

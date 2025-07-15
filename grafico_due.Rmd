@@ -1,0 +1,33 @@
+---
+title: "Grafico a Barre Comparativo"
+output: html_document
+---
+
+# Confronto tra Categorie
+
+Questo grafico a barre presenta i valori medi di diverse categorie, permettendoti di confrontarle facilmente. Qui mostriamo il consumo medio di carburante (`mpg`) per numero di cilindri (`cyl`).
+
+```{r bar-chart-plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5}
+# Carica tutte le librerie necessarie per questo chunk/pagina
+library(ggplot2)
+library(dplyr)
+library(plotly)
+
+# Calcoliamo la media di MPG per ogni gruppo di cilindri
+mpg_by_cyl <- mtcars %>%
+  group_by(cyl) %>%
+  summarise(mean_mpg = mean(mpg), .groups = 'drop') %>%
+  mutate(cyl = factor(cyl)) # Assicurati che 'cyl' sia un fattore per l'asse X discreto
+
+# Creiamo il grafico a barre con ggplot2
+p_bar <- ggplot(mpg_by_cyl, aes(x = cyl, y = mean_mpg, fill = cyl)) +
+  geom_col(color = "white") +
+  labs(title = "MPG Medio per Numero di Cilindri",
+       x = "Numero di Cilindri",
+       y = "MPG Medio") +
+  theme_minimal() +
+  theme(legend.position = "none") # Non serve la legenda se è già sull'asse X
+
+# Convertiamo in plotly per l'interattività
+ggplotly(p_bar)
+```
