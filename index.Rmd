@@ -9,6 +9,80 @@ Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica
 
 ---
 
+## Donne che hanno subito violenza da un partner intimo, per tipo di violenza
+
+### Dati Eurostat
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
+library(eurostat)
+library(kableExtra)
+library(dplyr)
+library(data.table)
+
+# Women who have experienced violence by a non-partner, by type of violence   
+B1 <- get_eurostat("gbv_ipv_type" , cache = TRUE, update_cache = FALSE)
+B2 <- label_eurostat(B1)
+setDT(B2)
+
+
+library(ggplot2)
+library(dplyr)
+library(stringr)
+
+B2_clean <- as.data.frame(B2)
+B2_clean <- na.omit(B2_clean)
+
+B2_filtered_geo <- B2_clean %>%
+  filter(geo != "European Union (aggregate changing according to the context)")
+
+physical_violence_data <- B2_filtered_geo %>%
+  filter(str_detect(violence, "(?i)Physical"))
+
+summary_physical_violence_by_country <- physical_violence_data %>%
+  group_by(geo) %>%
+  summarise(
+    avg_physical_violence = mean(values, na.rm = TRUE),
+    .groups = 'drop'
+  ) %>%
+  arrange(desc(avg_physical_violence))
+
+plot_physical_violence_geo <- ggplot(summary_physical_violence_by_country,
+                                     aes(x = reorder(geo, -avg_physical_violence),
+                                         y = avg_physical_violence,
+                                         fill = avg_physical_violence)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkred") +
+  labs(
+    x = "Paese",
+    y = "Percentuale Media di Violenza Fisica (%)",
+    fill = "Percentuale"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
+    axis.title.x = element_blank(),
+    legend.position = "right"
+  )
+
+plot_physical_violence_geo
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
 ## Economia Italiana Anno 2024
 
 Il grafico mette a confronto i principali indicatori economici relativi agli Stati Uniti e all’Italia, includendo le esportazioni totali negli USA, le esportazioni complessive italiane, il prodotto interno lordo italiano, le importazioni totali e gli investimenti.
