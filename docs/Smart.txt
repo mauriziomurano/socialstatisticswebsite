@@ -1,2 +1,7 @@
 
+
+git commit -m "AA"
+
 git push origin main --force
+
+git status

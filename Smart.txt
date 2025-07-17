@@ -1,2 +1,7 @@
+Ctrl + Shift + K (per fare il build)
+
+git commit -m "AA"
 
 git push origin main --force
+
+git status
