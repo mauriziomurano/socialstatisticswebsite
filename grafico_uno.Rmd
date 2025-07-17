@@ -3,43 +3,57 @@ title: "Grafico Serie Storiche"
 output: html_document
 ---
 
-# Andamento dei Valori nel Tempo
+---
 
-Questo grafico mostra l'andamento di due variabili campione nel tempo, rendendole interattive grazie a `plotly`. Puoi passare il mouse sui punti per vedere i dettagli, zoomare e selezionare aree.
+## Valori di Traffico di Persone per Paese e Tipo di Sfruttamento
 
-```{r time-series-plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=6}
-# Carica tutte le librerie necessarie per questo chunk/pagina
-library(ggplot2)
-library(plotly)
+### Dati Eurostat ANNO 2021
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.align="left"}
+library(eurostat)
+library(kableExtra)
 library(dplyr)
-library(lubridate)
-library(tidyr) # <--- QUESTA MANCAVA ORA LA AGGIUNGO PER PIVOT_LONGER
+library(data.table)
 
-# Creiamo alcuni dati di esempio per una serie storica
-set.seed(123)
-data_series <- tibble(
-  date = seq(ymd("2023-01-01"), ymd("2023-12-31"), by = "month"),
-  value_A = cumsum(rnorm(12, mean = 10, sd = 2)),
-  value_B = cumsum(rnorm(12, mean = 8, sd = 3))
-) %>%
-  pivot_longer(
-    cols = starts_with("value"),
-    names_to = "variable",
-    values_to = "value"
-  )
+# Women who have experienced violence by a non-partner, by type of violence   
+A <- get_eurostat("crim_thb_expsxa" , cache = TRUE, update_cache = FALSE)
+B <- label_eurostat(A)
+setDT(B)
+C <- B[, -c(1, 5)]
+C[[1]] <- as.factor(C[[1]])
+C[[2]] <- as.factor(C[[2]])
+C[[3]] <- as.factor(C[[3]])
+C[[4]] <- as.factor(C[[4]])
 
-# Creiamo il grafico con ggplot2
-p <- ggplot(data_series, aes(x = date, y = value, color = variable, group = variable)) +
-  geom_line(size = 1) +
-  geom_point(size = 2, alpha = 0.8) +
-  labs(title = "Andamento Mensile delle Variabili A e B",
-       x = "Data",
-       y = "Valore",
-       color = "Variabile") +
-  theme_minimal() +
-  theme(legend.position = "bottom")
 
-# Convertiamo in plotly per l'interattività
-ggplotly(p) %>%
-  layout(hovermode = "x unified") # Migliora il tooltip
+D <- C[, .(VALUES = sum(values, na.rm = TRUE)),
+                                by = .(iccs, sex, age, geo)]
+
+D <- D[grepl("Trafficking in persons for sexual exploitation or forced labour or services", iccs)]
+
+
+
+library(ggplot2)
+library(dplyr)
+
+D_cleaned <- D %>%
+  filter(!is.na(VALUES))
+
+ggplot(D_cleaned, aes(x = geo, y = VALUES, fill = VALUES)) +
+  geom_col(show.legend = FALSE) +
+  labs(
+    x = "",
+    y = ""
+  ) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8),
+    panel.spacing = unit(1.5, "lines"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    strip.text = element_text(size = 8, face = "bold", margin = margin(b = 5)),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+  ) +
+  facet_wrap(~ iccs, scales = "free_x", ncol = 2)
+
 ```

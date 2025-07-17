@@ -39,6 +39,7 @@ C_cleaned <- C %>%
 ggplot(C_cleaned, aes(x = geo, y = values, fill = values)) + # Cambiato 'fill = geo' a 'fill = values'
   geom_col(show.legend = FALSE) + # show.legend = TRUE per mostrare la legenda del colore
   labs(
+    x = "",
     y = ""
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + # Scala di colore dal blu chiaro al blu scuro
@@ -88,21 +89,22 @@ dataset <- tribble(
   "Investimenti",       370
 )
 
-colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
+# Non useremo più colori_pastello per il riempimento, ma lo mantengo se ti serve per altro
+# colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
 
 # Ordina per categoria (come in plotly)
 dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
 
-# Grafico statico
-ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
-  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
+# Grafico statico con sfumature di colore basate sul valore
+ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill = Categoria a fill = Valore
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) + # show.legend = TRUE per la barra del colore
   geom_text(
     aes(label = Valore),
     vjust = -0.7,
     size = 4,
     family = "Arial"
   ) +
-  scale_fill_manual(values = colori_pastello) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
@@ -113,7 +115,7 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "lightgrey", linetype = "dotted"),
+    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
     axis.text.y = element_text(size = 8, color = "grey20"),
     axis.title.y = element_text(size = 12, color = "black", face = "plain"),
@@ -142,21 +144,22 @@ dataset <- tribble(
   "2023",             184
 )
 
-colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
+# I colori_pastello non saranno usati per il riempimento, ma vengono mantenuti se necessari per altri scopi.
+# colori_pastello <- c("#AEC7E8", "#FFBB78", "#98DF8A", "#FF9896", "#C5B0D5")
 
 # Ordina per categoria (come in plotly)
 dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
 
-# Grafico statico
-ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
-  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
+# Grafico statico con sfumature di colore basate sul Valore
+ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato 'fill = Categoria' a 'fill = Valore'
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) + # show.legend = TRUE per mostrare la legenda del colore
   geom_text(
     aes(label = Valore),
     vjust = -0.7,
     size = 4,
     family = "Arial"
   ) +
-  scale_fill_manual(values = colori_pastello) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
@@ -167,7 +170,7 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Categoria)) +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "lightgrey", linetype = "dotted"),
+    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
     axis.text.y = element_text(size = 8, color = "grey20"),
     axis.title.y = element_text(size = 12, color = "black", face = "plain"),

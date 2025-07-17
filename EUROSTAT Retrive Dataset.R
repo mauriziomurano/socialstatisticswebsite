@@ -8,7 +8,7 @@ library(kableExtra)
 library(dplyr)
 library(data.table)
 
-search_results <- search_eurostat("violence")
+search_results <- search_eurostat("trafficking")
 
 print(search_results %>%
         select(title, code, data.start, data.end) %>%
