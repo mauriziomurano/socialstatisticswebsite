@@ -29,40 +29,29 @@ library(ggplot2)
 library(dplyr)
 library(stringr)
 
-B2_clean <- as.data.frame(B2)
-B2_clean <- na.omit(B2_clean)
+B2_filtered_geo <- B2[geo != "European Union (aggregate changing according to the context)"]
 
-B2_filtered_geo <- B2_clean %>%
-  filter(geo != "European Union (aggregate changing according to the context)")
+physical_violence_data <- B2_filtered_geo[str_detect(violence, "(?i)Physical \\(including threats\\) or sexual")]
 
-physical_violence_data <- B2_filtered_geo %>%
-  filter(str_detect(violence, "(?i)Physical"))
-
-summary_physical_violence_by_country <- physical_violence_data %>%
-  group_by(geo) %>%
-  summarise(
-    avg_physical_violence = mean(values, na.rm = TRUE),
-    .groups = 'drop'
-  ) %>%
-  arrange(desc(avg_physical_violence))
+summary_physical_violence_by_country <- physical_violence_data[, .(avg_physical_violence = mean(values, na.rm = TRUE)), by = geo][order(-avg_physical_violence)]
 
 plot_physical_violence_geo <- ggplot(summary_physical_violence_by_country,
                                      aes(x = reorder(geo, -avg_physical_violence),
                                          y = avg_physical_violence,
                                          fill = avg_physical_violence)) +
-  geom_bar(stat = "identity") +
-  scale_fill_gradient(low = "lightblue", high = "darkred") +
-  labs(
-    x = "Paese",
-    y = "Percentuale Media di Violenza Fisica (%)",
-    fill = "Percentuale"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
-    axis.title.x = element_blank(),
-    legend.position = "right"
-  )
+    geom_bar(stat = "identity") +
+    scale_fill_gradient(low = "lightblue", high = "darkred") +
+    labs(
+        x = "Paese",
+        y = "Percentuale Media di Violenza Fisica (%)",
+        fill = "Percentuale"
+    ) +
+    theme_minimal() +
+    theme(
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
+        axis.title.x = element_blank(),
+        legend.position = "right"
+    )
 
 plot_physical_violence_geo
 
