@@ -11,50 +11,46 @@ Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica
 
 ## Donne che hanno subito violenza fisica da un partner intimo
 
-### Dati Eurostat
+### Dati Eurostat ANNO 2021
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.align="left"}
 library(eurostat)
 library(kableExtra)
 library(dplyr)
 library(data.table)
 
 # Women who have experienced violence by a non-partner, by type of violence   
-B1 <- get_eurostat("gbv_ipv_type" , cache = TRUE, update_cache = FALSE)
-B2 <- label_eurostat(B1)
-setDT(B2)
+A <- get_eurostat("gbv_ipv_type" , cache = TRUE, update_cache = FALSE)
+B <- label_eurostat(A)
+setDT(B)
+C <- B[, -c(1, 3, 5)]
+C[[1]] <- as.factor(C[[1]])
+C[[2]] <- as.factor(C[[2]])
+C <- C[!grepl("European Union \\(aggregate changing according to the context\\)", geo)]
 
+C <- C[grepl("Physical", violence)]
 
 library(ggplot2)
 library(dplyr)
-library(stringr)
 
-B2_filtered_geo <- B2[geo != "European Union (aggregate changing according to the context)"]
+C_cleaned <- C %>%
+  filter(!is.na(values))
 
-physical_violence_data <- B2_filtered_geo[str_detect(violence, "(?i)Physical \\(including threats\\) or sexual")]
-
-summary_physical_violence_by_country <- physical_violence_data[, .(avg_physical_violence = mean(values, na.rm = TRUE)), by = geo][order(-avg_physical_violence)]
-
-plot_physical_violence_geo <- ggplot(summary_physical_violence_by_country,
-                                     aes(x = reorder(geo, -avg_physical_violence),
-                                         y = avg_physical_violence,
-                                         fill = avg_physical_violence)) +
-    geom_bar(stat = "identity") +
-    scale_fill_gradient(low = "lightblue", high = "darkred") +
-    labs(
-        x = "Paese",
-        y = "Percentuale Media di Violenza Fisica (%)",
-        fill = "Percentuale"
-    ) +
-    theme_minimal() +
-    theme(
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 9),
-        axis.title.x = element_blank(),
-        legend.position = "right"
-    )
-
-plot_physical_violence_geo
-
+ggplot(C_cleaned, aes(x = geo, y = values, fill = values)) + # Cambiato 'fill = geo' a 'fill = values'
+  geom_col(show.legend = FALSE) + # show.legend = TRUE per mostrare la legenda del colore
+  labs(
+    y = ""
+  ) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + # Scala di colore dal blu chiaro al blu scuro
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8),
+    panel.spacing = unit(1.5, "lines"),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    strip.text = element_text(size = 9, face = "bold", margin = margin(b = 5)),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+  ) +
+  facet_wrap(~ violence, scales = "free_x", ncol = 2)
 
 ```
 
