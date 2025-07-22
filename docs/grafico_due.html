@@ -32,14 +32,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
-<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -283,14 +275,16 @@ $(document).ready(function () {
 </div>
 
 
-<div id="confronto-tra-categorie" class="section level1">
-<h1>Confronto tra Categorie</h1>
-<p>Questo grafico a barre presenta i valori medi di diverse categorie,
-permettendoti di confrontarle facilmente. Qui mostriamo il consumo medio
-di carburante (<code>mpg</code>) per numero di cilindri
-(<code>cyl</code>).</p>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-9eceb20dc2a931752ae4" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9eceb20dc2a931752ae4">{"x":{"data":[{"orientation":"v","width":0.89999999999999991,"base":0,"x":[1],"y":[26.663636363636364],"text":"cyl: 4<br />mean_mpg: 26.66364<br />cyl: 4","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.8897637795275593,"color":"rgba(255,255,255,1)"}},"name":"4","legendgroup":"4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.90000000000000013,"base":0,"x":[2],"y":[19.742857142857144],"text":"cyl: 6<br />mean_mpg: 19.74286<br />cyl: 6","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","line":{"width":1.8897637795275593,"color":"rgba(255,255,255,1)"}},"name":"6","legendgroup":"6","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.90000000000000036,"base":0,"x":[3],"y":[15.1],"text":"cyl: 8<br />mean_mpg: 15.10000<br />cyl: 8","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","line":{"width":1.8897637795275593,"color":"rgba(255,255,255,1)"}},"name":"8","legendgroup":"8","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":45.223744292237441,"r":7.3059360730593621,"b":41.643835616438366,"l":37.260273972602747},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"MPG Medio per Numero di Cilindri","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,3.6000000000000001],"tickmode":"array","ticktext":["4","6","8"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["4","6","8"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Numero di Cilindri","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1.3331818181818182,27.996818181818181],"tickmode":"array","ticktext":["0","10","20"],"tickvals":[0,10,20],"categoryorder":"array","categoryarray":["0","10","20"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716894984},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"MPG Medio","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"400c3a6740fa":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"400c3a6740fa","visdat":{"400c3a6740fa":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="persons-reading-books-in-the-last-12-months"
+class="section level2">
+<h2>Persons reading books in the last 12 months</h2>
+<div id="dati-eurostat-anno-2022" class="section level3">
+<h3>Dati Eurostat ANNO 2022</h3>
+<div id="unit-of-measure-percentage" class="section level4">
+<h4>Unit of measure: Percentage</h4>
+<p><img src="grafico_due_files/figure-html/unnamed-chunk-1-1.png" width="100%" style="display: block; margin: auto auto auto 0;" /></p>
+</div>
+</div>
 </div>
 
 

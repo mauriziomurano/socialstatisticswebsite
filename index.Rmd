@@ -7,6 +7,7 @@ output: html_document
 
 Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica, con l’obiettivo di promuovere un approccio empirico allo studio delle trasformazioni contemporanee. Uno spazio per ricercatori, studenti e cittadini interessati ai dati come strumento di conoscenza.
 
+
 ---
 
 ## Donne che hanno subito violenza fisica da un partner intimo

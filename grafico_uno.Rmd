@@ -5,55 +5,73 @@ output: html_document
 
 ---
 
-## Valori di Traffico di Persone per Paese e Tipo di Sfruttamento
+## Gross domestic product (GDP) per capita
 
-### Dati Eurostat ANNO 2021
+### Dati Eurostat 1995-2024
+
+#### Unit of measure: Euro
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.align="left"}
+
 library(eurostat)
 library(kableExtra)
 library(dplyr)
 library(data.table)
 
-# Women who have experienced violence by a non-partner, by type of violence   
-A <- get_eurostat("crim_thb_expsxa" , cache = TRUE, update_cache = FALSE)
+
+A <- get_eurostat("nama_10_pc" , cache = TRUE, update_cache = FALSE)
 B <- label_eurostat(A)
 setDT(B)
-C <- B[, -c(1, 5)]
-C[[1]] <- as.factor(C[[1]])
-C[[2]] <- as.factor(C[[2]])
-C[[3]] <- as.factor(C[[3]])
-C[[4]] <- as.factor(C[[4]])
 
 
-D <- C[, .(VALUES = sum(values, na.rm = TRUE)),
-                                by = .(iccs, sex, age, geo)]
+C <- B[, -c(1)]
 
-D <- D[grepl("Trafficking in persons for sexual exploitation or forced labour or services", iccs)]
+C$TIME_PERIOD <- substr(C$TIME_PERIOD, 1, 4)
+
+C <- C[unit == "Current prices, purchasing power standard (PPS, EU27 from 2020) per capita"]
+
+C <- C[na_item == "Gross domestic product at market prices"]
+
+C1 <- C[geo == "Italy"]
+
+C2 <- C[geo == "Germany"]
 
 
+#Italy
+D = C1[,c(4,5)]
+E = C2[,c(4,5)]
 
 library(ggplot2)
 library(dplyr)
 
-D_cleaned <- D %>%
-  filter(!is.na(VALUES))
+combined_data <- bind_rows(
+  D %>% mutate(TIME_PERIOD = as.numeric(TIME_PERIOD), Source = "Italy"),
+  E %>% mutate(TIME_PERIOD = as.numeric(TIME_PERIOD), Source = "Germany")
+)
 
-ggplot(D_cleaned, aes(x = geo, y = VALUES, fill = VALUES)) +
-  geom_col(show.legend = FALSE) +
-  labs(
-    x = "",
-    y = ""
+all_years <- sort(unique(combined_data$TIME_PERIOD))
+
+ggplot(combined_data, aes(x = TIME_PERIOD, y = values, color = Source)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  labs(color = NULL) + # Set legend title to NULL to remove it
+  scale_x_continuous(
+    breaks = all_years,
+    labels = all_years
   ) +
-  scale_fill_gradient(low = "lightblue", high = "darkblue") +
-  theme_minimal(base_size = 10) +
+  scale_color_manual(values = c("Italy" = "darkblue", "Germany" = "darkred")) +
+  theme_minimal(base_size = 14) +
   theme(
     axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8),
-    panel.spacing = unit(1.5, "lines"),
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
-    strip.text = element_text(size = 8, face = "bold", margin = margin(b = 5)),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
-  ) +
-  facet_wrap(~ iccs, scales = "free_x", ncol = 2)
+    plot.title = element_blank(),
+    axis.title = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10),
+    legend.position = c(0.4, 0.85),
+    legend.justification = c("right", "bottom"),
+    legend.title = element_blank(), # Remove legend title
+    legend.background = element_rect(fill = NA, color = NA) # Remove legend background and border
+  )
 
 ```
