@@ -1,5 +1,5 @@
 ---
-title: "Grafico Serie Storiche"
+title: "Articoli Precedenti"
 output: html_document
 ---
 
@@ -75,3 +75,195 @@ ggplot(combined_data, aes(x = TIME_PERIOD, y = values, color = Source)) +
   )
 
 ```
+
+
+
+\vspace{0.5cm}
+
+---
+
+## QUESTIONARIO EVOLUZIONI PERCETTIVE
+
+
+Compila il [QUESTIONARIO EVOLUZIONI PERCETTIVE](https://worldcharty.shinyapps.io/EVOLUZIONI-PERCETTIVE/)
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.align="left"}
+
+
+# 1. Carica le librerie necessarie
+library(tidyverse)    # Per manipolazione dati
+library(RColorBrewer) # Per colori dei grafici
+library(googlesheets4) # Per leggere dal tuo Google Sheet
+
+# --- 2. IL TUO URL DEL GOOGLE SHEET ---
+# Questo è l'URL del tuo Google Sheet.
+YOUR_GOOGLE_SHEET_URL <- "https://docs.google.com/spreadsheets/d/1ZRHdQIr4kLsCISFrueQPUQprZBrynCoCcY6Yn9A-igM/edit?usp=sharing"
+
+# --- 3. Funzione per GENERARE un singolo grafico a torta (base R) ---
+generate_base_pie_chart <- function(data_column_values, title_label) {
+  
+  # Se la colonna è vuota o contiene solo NA, non fare il grafico
+  if (all(is.na(data_column_values)) || length(data_column_values) == 0) {
+    message(paste0("Attenzione: Nessun dato valido per il grafico '", title_label, "'. Verrà saltato."))
+    return(NULL)
+  }
+  
+  # Prepara i dati: conta le occorrenze e gestisci i valori NA
+  plot_data <- tibble(
+    value_raw = data_column_values
+  ) %>%
+    mutate(
+      # Trasforma NA in "Non Risposto" per il grafico
+      value_display = case_when(
+        is.na(value_raw) ~ "Non Risposto",
+        TRUE ~ as.character(value_raw) # Converte tutto in testo per categorie
+      )
+    ) %>%
+    count(value_display, name = "count")
+  
+  # Ordina le categorie per un grafico più leggibile (numeri crescenti, "Non Risposto" alla fine)
+  ordered_levels <- c(
+    sort(as.character(plot_data$value_display[plot_data$value_display != "Non Risposto"])),
+    if ("Non Risposto" %in% plot_data$value_display) "Non Risposto"
+  )
+  plot_data$value_display <- factor(plot_data$value_display, levels = unique(ordered_levels))
+  
+  # Assicurati che il conteggio delle categorie non sia zero per evitare errori nel colore
+  if (nrow(plot_data) == 0) {
+    message(paste0("Attenzione: Dati insufficienti per il grafico '", title_label, "'. Verrà saltato."))
+    return(NULL)
+  }
+
+  # Genera colori per le fette del grafico (più accattivanti)
+  num_categories <- n_distinct(plot_data$value_display)
+  
+  # Offri diverse opzioni di palette
+  colors <- if (num_categories <= 12) {
+    brewer.pal(max(3, num_categories), "Paired") # Utilizza una palette più vivace
+  } else if (num_categories <= 8) {
+    brewer.pal(max(3, num_categories), "Set2") # Un'altra buona opzione per meno colori
+  }
+  else {
+    # Se ci sono troppe categorie, usa un gradiente ampio
+    colorRampPalette(brewer.pal(8, "Dark2"))(num_categories)
+  }
+  
+  # Assegna un colore specifico per "Non Risposto" se presente
+  if ("Non Risposto" %in% levels(plot_data$value_display)) {
+    na_index <- which(levels(plot_data$value_display) == "Non Risposto")
+    colors_temp <- colors # Usa una copia temporanea
+    colors_temp[na_index] <- "lightgrey"
+    colors <- colors_temp
+  }
+  
+  # Crea le etichette per le percentuali
+  plot_data <- plot_data %>%
+    mutate(
+      percentage = count / sum(count) * 100,
+      label_text = paste0(value_display, "\n", round(percentage, 1), "%")
+    )
+  
+  # Ordina i colori in base all'ordinamento delle etichette del factor
+  ordered_colors <- colors[match(plot_data$value_display, levels(plot_data$value_display))]
+
+  # Genera il grafico a torta base di R
+  # Rimuovi 'main' da pie() per maggiore controllo del titolo
+  pie(plot_data$count, 
+      labels = plot_data$label_text, 
+      col = ordered_colors, 
+      cex = 0.8) # Aumenta leggermente la dimensione del testo delle etichette
+  
+  # Aggiungi il titolo usando 'title()' per un posizionamento più preciso
+  title(main = title_label, line = -1.5, cex.main = 1) # line = -1.5 tira su il titolo
+}
+
+# --- 4. CARICAMENTO DATI E VISUALIZZAZIONE MATRICE DI GRAFICI ---
+
+message("--- Avvio script di visualizzazione matrice di grafici a torta ---")
+
+# Autentica con Google Sheets (richiederà l'autorizzazione la prima volta)
+options(gargle_oauth_cache = ".secrets") # Per memorizzare le credenziali
+googlesheets4::gs4_auth(cache = ".secrets", email = TRUE)
+
+# Carica i tuoi dati dal Google Sheet
+message(paste0("Tentativo di leggere i dati da: ", YOUR_GOOGLE_SHEET_URL))
+raw_data <- tryCatch({
+  googlesheets4::read_sheet(YOUR_GOOGLE_SHEET_URL, sheet = 1)
+}, error = function(e) {
+  warning("Errore durante la lettura del Google Sheet: ", e$message)
+  message("Verifica che l'URL sia corretto e che il foglio sia condivisibile (almeno in lettura).")
+  return(NULL) # Ritorna NULL in caso di errore
+})
+
+if (is.null(raw_data) || nrow(raw_data) == 0) {
+  stop("Nessun dato valido è stato caricato dal Google Sheet. Impossibile generare i grafici.")
+} else {
+  message(paste0("Caricati ", nrow(raw_data), " righe di dati."))
+}
+
+# Identifica le colonne per i grafici (escludendo 'timestamp' e 'user_code_hash')
+columns_to_plot <- setdiff(names(raw_data), c("timestamp", "user_code_hash"))
+
+# Calcola il layout della matrice
+num_plots <- length(columns_to_plot)
+if (num_plots == 0) {
+  stop("Nessuna colonna valida trovata per generare i grafici.")
+}
+
+# Imposta il numero di colonne desiderato per la matrice (es. 4 colonne)
+cols_per_row <- 4 
+rows_needed <- ceiling(num_plots / cols_per_row)
+
+# Imposta il layout grafico con margini ancora più ridotti
+# mar = c(bottom, left, top, right)
+# Il valore 'top' di mar è stato ridotto per avvicinare i titoli
+par(mfrow = c(rows_needed, cols_per_row), 
+    mar = c(0.5, 0.5, 1.5, 0.5), # Margini interni molto ridotti, soprattutto in alto
+    oma = c(0, 0, 1, 0))         # Margine esterno generale (puoi renderlo 0 se non vuoi titolo globale)
+
+# Itera su ogni colonna identificata per creare e visualizzare il grafico
+for (col_name in columns_to_plot) {
+  message(paste0("Creazione grafico per la colonna: '", col_name, "'..."))
+  
+  # Estrai la colonna dei valori
+  current_values <- raw_data[[col_name]]
+  
+  # Usa il nome della colonna come titolo del grafico
+  plot_title <- col_name
+  
+  # Genera il grafico a torta base di R
+  generate_base_pie_chart(current_values, plot_title)
+}
+
+# Puoi aggiungere un titolo complessivo alla matrice se vuoi (optional)
+# mtext("Distribuzione delle Percezioni del Questionario", side = 3, line = -0.5, outer = TRUE, cex = 1.5, font = 2)
+
+# Ripristina il layout grafico predefinito dopo aver finito
+par(mfrow = c(1, 1), mar = c(5, 4, 4, 2) + 0.1, oma = c(0,0,0,0)) 
+
+message("--- Script completato: la matrice di grafici è stata visualizzata. ---")
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

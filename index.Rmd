@@ -8,6 +8,81 @@ output: html_document
 Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica, con l’obiettivo di promuovere un approccio empirico allo studio delle trasformazioni contemporanee. Uno spazio per ricercatori, studenti e cittadini interessati ai dati come strumento di conoscenza.
 
 
+
+
+
+
+
+---
+
+## AAA
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
+
+library(ggplot2)
+library(tibble)
+
+dataset <- tribble(
+  ~Categoria,           ~Valore,
+  "Soldati russi caduti Mag 25", 250000 ,
+  "Soldati ucraini caduti Mag 25",  80000,
+  "Civili ucraini caduti Mag 25",  13000,
+  "Popolazione palestinese",  5000000,
+  "Vittime palestinesi Mag 25",  62000,
+  "Popolazione armena",  1800000,
+  "Vittime armene 15-23",  1500000,
+  "Popolazione ebrea in Europa 1939",  7000000, 
+  "Vittime ebree dell'olocausto",  6000000, 
+)
+
+# Ordina per categoria (come in plotly)
+dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
+
+# Grafico statico con sfumature di colore basate sul valore
+ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill = Categoria a fill = Valore
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) + # show.legend = TRUE per la barra del colore
+  geom_text(
+    aes(label = Valore),
+    vjust = -0.7,
+    size = 4,
+    family = "Arial"
+  ) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + 
+  scale_y_continuous(
+    limits = c(0, max(dataset$Valore) * 1.15),
+    expand = c(0, 0),
+    name = " "
+  ) +
+  labs(x = NULL) +
+  theme_minimal(base_family = "Arial") +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
+    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
+  )
+```
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ## Donne che hanno subito violenza fisica da un partner intimo

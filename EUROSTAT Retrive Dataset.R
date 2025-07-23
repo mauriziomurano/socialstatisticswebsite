@@ -8,7 +8,7 @@ library(kableExtra)
 library(dplyr)
 library(data.table)
 
-search_results <- search_eurostat("Gross domestic product")
+search_results <- search_eurostat("drink")
 
 print(search_results %>%
         select(title, code, data.start, data.end) %>%
