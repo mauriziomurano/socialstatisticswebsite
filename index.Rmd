@@ -1,43 +1,6 @@
 ---
 title: "Statistiche Sociali e Geopolitiche"
-output: 
-  html_document:
-    # Rimuove il tema R Markdown per un controllo totale tramite CSS
-    theme: null
-header-includes:
-  - |
-    <style>
-      /* Stile del Contenitore Principale (Centratura e Margini Responsive) */
-      .main-container {
-        /* Larghezza massima ideale per la lettura su desktop */
-        max-width: 1000px !important; 
-        /* Centra il contenitore orizzontalmente */
-        margin: 0 auto !important; 
-        /* Padding generico per tutti i dispositivi: 30px sopra/sotto, 15px ai lati */
-        padding: 30px 15px; 
-      }
-      /* FONT: Forza un font serif (tipo Times New Roman/Georgia) per il look LaTeX */
-      body, h1, h2, h3, h4 {
-        font-family: "Georgia", "Times New Roman", Times, serif;
-        line-height: 1.6; /* Interlinea classica */
-        /* Dimensione base del font leggermente più grande per leggibilità PC */
-        font-size: 16px;
-      }
-      h1, h2, h3, h4 {
-        font-weight: bold;
-      }
-      code {
-        /* Mantiene la leggibilità del codice con un font monospace */
-        font-family: 'Courier New', Courier, monospace;
-      }
-      /* MEDIA QUERY per dispositivi più grandi (PC/Tablet) - Aumenta i margini laterali */
-      @media (min-width: 768px) {
-        .main-container {
-          padding-left: 50px !important; /* Margine laterale più ampio sui PC */
-          padding-right: 50px !important;
-        }
-      }
-    </style>
+output: html_document
 ---
 
 ## Dati e strumenti per interpretare dinamiche sociali e globali
@@ -120,8 +83,8 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
     # Etichette delle barre (ora saranno a destra delle barre)
     aes(label = Etichetta_Formattata),
     hjust = -0.1, # vjust diventa hjust per le barre orizzontali (spostato a destra)
-    size = 3,
-    family = "serif"
+    size = 4,
+    family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
@@ -132,17 +95,17 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
     name = " "
   ) +
   labs(x = NULL) +
-  theme_minimal(base_family = "serif") +
+  theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_line(color = "grey", linetype = "dotted"), # La griglia X è quella dei valori
     panel.grid.major.y = element_blank(), # La griglia Y è quella delle categorie
     
     # Ora axis.text.y è per le categorie (ex X), axis.text.x è per i valori (ex Y)
-    axis.text.x = element_text(size = 7, color = "grey20"), # Ex axis.text.y
-    axis.text.y = element_text(hjust = 1, size = 9, color = "grey20"), # Ex axis.text.x, allineato a destra
+    axis.text.x = element_text(size = 8, color = "grey20"), # Ex axis.text.y
+    axis.text.y = element_text(hjust = 1, size = 10, color = "grey20"), # Ex axis.text.x, allineato a destra
     
-    axis.title.x = element_text(size = 11, color = "black", face = "plain"), # Titolo per l'asse dei valori
+    axis.title.x = element_text(size = 12, color = "black", face = "plain"), # Titolo per l'asse dei valori
     axis.title.y = element_blank(), # Rimuovi il titolo per le categorie
     plot.margin = margin(t = 20, r = 20, b = 20, l = 0) # Aggiustato i margini
   ) +
@@ -213,8 +176,8 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
     # Etichette delle barre (ora saranno a destra delle barre)
     aes(label = Etichetta_Formattata),
     hjust = -0.1, # vjust diventa hjust per le barre orizzontali (spostato a destra)
-    size = 3,
-    family = "serif"
+    size = 4,
+    family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
@@ -225,17 +188,17 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
     name = " "
   ) +
   labs(x = NULL) +
-  theme_minimal(base_family = "serif") +
+  theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_line(color = "grey", linetype = "dotted"), # La griglia X è quella dei valori
     panel.grid.major.y = element_blank(), # La griglia Y è quella delle categorie
     
     # Ora axis.text.y è per le categorie (ex X), axis.text.x è per i valori (ex Y)
-    axis.text.x = element_text(size = 7, color = "grey20"), # Ex axis.text.y
-    axis.text.y = element_text(hjust = 1, size = 9, color = "grey20"), # Ex axis.text.x, allineato a destra
+    axis.text.x = element_text(size = 8, color = "grey20"), # Ex axis.text.y
+    axis.text.y = element_text(hjust = 1, size = 10, color = "grey20"), # Ex axis.text.x, allineato a destra
     
-    axis.title.x = element_text(size = 11, color = "black", face = "plain"), # Titolo per l'asse dei valori
+    axis.title.x = element_text(size = 12, color = "black", face = "plain"), # Titolo per l'asse dei valori
     axis.title.y = element_blank(), # Rimuovi il titolo per le categorie
     plot.margin = margin(t = 20, r = 20, b = 20, l = 0) # Aggiustato i margini
   ) +
@@ -286,10 +249,10 @@ ggplot(C_cleaned, aes(x = geo, y = values, fill = values)) + # Cambiato 'fill = 
   scale_fill_gradient(low = "lightblue", high = "darkblue") + # Scala di colore dal blu chiaro al blu scuro
   theme_minimal(base_size = 10) +
   theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8),
     panel.spacing = unit(1.5, "lines"),
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 12),
-    strip.text = element_text(size = 8, face = "bold", margin = margin(b = 5)),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    strip.text = element_text(size = 9, face = "bold", margin = margin(b = 5)),
     plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
   ) +
   facet_wrap(~ violence, scales = "free_x", ncol = 2)
@@ -310,7 +273,7 @@ ggplot(C_cleaned, aes(x = geo, y = values, fill = values)) + # Cambiato 'fill = 
 
 ---
 
-## Economia Italiana Anno 2024 (Milardi di €)
+## Economia Italiana Anno 2024
 
 Il grafico mette a confronto i principali indicatori economici relativi agli Stati Uniti e all’Italia, includendo le esportazioni totali negli USA, le esportazioni complessive italiane, il prodotto interno lordo italiano, le importazioni totali e gli investimenti.
 
@@ -342,31 +305,31 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill
   geom_text(
     aes(label = Valore),
     vjust = -0.7,
-    size = 3,
-    family = "serif"
+    size = 4,
+    family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
-    name = " "
+    name = "Milardi di €"
   ) +
   labs(x = NULL) +
-  theme_minimal(base_family = "serif") +
+  theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
-    axis.text.y = element_text(size = 7, color = "grey20"),
-    axis.title.y = element_text(size = 11, color = "black", face = "plain"),
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
     plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
   )
 ```
 
 ---
 
-## Tendenze dei Matrimoni in Italia (Mila Unità)
+## Tendenze dei Matrimoni in Italia
 
 Esplora le profonde trasformazioni sociali che hanno interessato l'Italia attraverso l'analisi dei dati sui matrimoni. Questo grafico illustra il costante declino del numero di unioni, partendo dalle medie del dopoguerra (1946-1970) fino al dato del 2023. Una rappresentazione chiara che evidenzia i cambiamenti demografici, culturali ed economici che stanno ridefinendo la struttura della famiglia e delle relazioni nel nostro paese.
 
@@ -398,23 +361,23 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato 'fil
     aes(label = Valore),
     vjust = -0.7,
     size = 4,
-    family = "serif"
+    family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
-    name = " "
+    name = "Mila Unità"
   ) +
   labs(x = NULL) +
-  theme_minimal(base_family = "serif") +
+  theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
-    axis.text.y = element_text(size = 7, color = "grey20"),
-    axis.title.y = element_text(size = 11, color = "black", face = "plain"),
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
     plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
   )
 ```
