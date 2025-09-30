@@ -15,7 +15,7 @@ Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica
 
 ---
 
-## Vittime in contesti di conflitto
+## Vittime in contesti di conflitto 
 
 Il grafico presenta un confronto quantitativo immediato di diverse categorie, mescolando dati relativi alle vittime in contesti di conflitto recenti e storici con la dimensione delle popolazioni coinvolte. 
 
@@ -48,13 +48,13 @@ dataset <- dataset %>%
       TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
     ),
     # Nuova colonna per l'etichetta dell'asse X con a capo
-    Categoria_Wrapped = str_wrap(Categoria, width = 14) # Larghezza massima di 15 caratteri per riga
+    Categoria_Wrapped = str_wrap(Categoria, width = 8) # Larghezza massima di 15 caratteri per riga
   )
 
 # Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
 dataset$Categoria_Wrapped <- factor(
   dataset$Categoria_Wrapped, 
-  levels = str_wrap(dataset$Categoria, width = 14)
+  levels = str_wrap(dataset$Categoria, width = 8)
 )
 
 # Grafico statico con le etichette corrette
@@ -127,13 +127,13 @@ dataset <- dataset %>%
       TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
     ),
     # Nuova colonna per l'etichetta dell'asse X con a capo
-    Categoria_Wrapped = str_wrap(Categoria, width = 14) # Larghezza massima di 15 caratteri per riga
+    Categoria_Wrapped = str_wrap(Categoria, width = 8) # Larghezza massima di 15 caratteri per riga
   )
 
 # Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
 dataset$Categoria_Wrapped <- factor(
   dataset$Categoria_Wrapped, 
-  levels = str_wrap(dataset$Categoria, width = 14)
+  levels = str_wrap(dataset$Categoria, width = 8)
 )
 
 # Grafico statico con le etichette corrette
