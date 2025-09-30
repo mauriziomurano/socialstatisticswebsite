@@ -114,7 +114,7 @@ dataset <- tribble(
   "Prima Guerra Mondiale", 16000000,
   "Conflitto in Etiopia", 100000, 
   "Guerra in Siria", 500000, 
-  "Guerra in Yemen", 18000,
+  "Guerra in Yemen", 18000
 
 )
 
