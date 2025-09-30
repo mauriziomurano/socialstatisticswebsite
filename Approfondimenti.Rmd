@@ -1,17 +1,18 @@
 ---
-title: "Articoli Precedenti"
+title: "Approfondimenti"
 output: html_document
 ---
 
 ---
 
-## Gross domestic product (GDP) per capita
+## Prodotto Interno Lordo (PIL) pro capite (Euro) in Standard di Potere d'Acquisto (PPS)
 
-### Dati Eurostat 1995-2024
+### Dati Eurostat 1995-2024 Italia vs. Germania con Evidenza dei Periodi di Governo <span style="display: block; margin-bottom: 50px;"></span>
 
-#### Unit of measure: Euro
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.align="left"}
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="90%", fig.align="left"}
 
 library(eurostat)
 library(kableExtra)
@@ -41,33 +42,126 @@ E = C2[,c(4,5)]
 combined_data <- bind_rows(
   D %>% mutate(TIME_PERIOD = as.numeric(TIME_PERIOD), Source = "Italy"),
   E %>% mutate(TIME_PERIOD = as.numeric(TIME_PERIOD), Source = "Germany")
-)
+) 
 
 all_years <- sort(unique(combined_data$TIME_PERIOD))
 
+event_data <- data.frame(
+  # Inserisci qui gli anni esatti (come numero)
+  event_year = c(2002, 2004, 2008, 2010,2020), 
+  # Inserisci qui le etichette per gli eventi
+  event_label = c("Euro", "Allargamento a EST", "Crisi Finanziaria Globale", "Crisi del Debito Sovrano", "COVID19")
+)
+
+
+period_data <- data.frame(
+  # Periodi da evidenziare (Anni iniziali e finali del periodo)
+  start_year = c(2001, 2008, 2014, 2018), 
+  end_year = c(2006, 2011, 2016, 2021), 
+  # Etichette del periodo
+  period_label = c("Berlusconi II/III", "Berlusconi IV","Renzi", "Conte")
+
+)
+
+max_y <- max(combined_data$values)
+
+
 ggplot(combined_data, aes(x = TIME_PERIOD, y = values, color = Source)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  labs(color = NULL) + 
+  
+  # Aggiunta 3: Aree colorate semi-trasparenti per i periodi (Sotto le linee)
+  geom_rect(
+    data = period_data,
+    aes(xmin = start_year, xmax = end_year, ymin = -Inf, ymax = Inf, fill = period_label),
+    inherit.aes = FALSE,
+    alpha = 0.1, 
+    color = NA  # NESSUN BORDO
+  ) +
+  
+  # Aggiunta 4: Etichette centrali per i periodi (Nuovo livello di testo)
+  geom_text(
+    data = period_data,
+    # X al centro del periodo, Y nella parte alta (100% dell'asse Y)
+    aes(x = start_year + (end_year - start_year) / 2, y = max_y * 1.02, label = period_label),
+    inherit.aes = FALSE,
+    angle = 0,         # Testo orizzontale
+    size = 4,
+    color = "gray20",
+    fontface = "bold"  # Rendi il testo in grassetto per distinguerlo
+  ) +
+  
+  # Linee e punti (gli elementi del tuo grafico rimangono invariati)
+  geom_line(size = 0.8) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  
+  # Aggiunta 1: Linee Verticali tratteggiate (Rimane invariato, colore grigio)
+  geom_vline(
+    data = event_data, 
+    aes(xintercept = event_year),
+    linetype = "dashed",
+    color = "gray40", 
+    linewidth = 0.6
+  ) +
+  
+  # Aggiunta 2: Etichette per gli eventi (Spostate leggermente più in basso per lasciare spazio)
+  geom_text(
+    data = event_data, 
+    # Posiziona le etichette sotto quelle dei periodi
+    aes(x = event_year, y = max_y * 0.9, label = event_label), 
+    inherit.aes = FALSE,
+    angle = 90,
+    hjust = 0.7,
+    vjust = -0.5,
+    size = 3.5,
+    color = "gray50"
+  ) +
+  
+  # Aggiungi un titolo appropriato al grafico
+  labs(
+    y = " ", # Ho reintrodotto l'etichetta y per chiarezza
+    x = " ",
+    fill = "Periodo di Governo" # Titolo per la nuova legenda area
+  ) + 
+  
+  # Gestione dei colori
+  scale_color_manual(values = c("Italy" = "lightblue", "Germany" = "darkblue")) +
+  # Nuova Scala per il riempimento dei periodi (puoi usare i tuoi colori)
+  scale_fill_manual(values = c("Ciclo Berlusconi II/III" = "salmon", "Ciclo Berlusconi IV" = "gold")) +
+  
+  # Asse X e tema
   scale_x_continuous(
     breaks = all_years,
-    labels = all_years
+    labels = all_years,
+    expand = c(0, 0) # Aumentato leggermente il margine destro per le etichette
   ) +
-  scale_color_manual(values = c("Italy" = "darkblue", "Germany" = "darkred")) +
-  theme_minimal(base_size = 14) +
+  theme_minimal(base_size = 12) +
+  
+  # Personalizzazione dettagliata per un aspetto più 'fine'
   theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8),
-    plot.title = element_blank(),
-    axis.title = element_blank(),
+    plot.title = element_text(hjust = 0, face = "bold", size = 14, margin = margin(b = 5)),
+    plot.subtitle = element_text(hjust = 0, size = 12, color = "gray30", margin = margin(b = 10)),
+    
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 9, color = "gray50"),
+    axis.text.y = element_text(size = 10, color = "gray50"),
+    
+    axis.title.x = element_text(margin = margin(t = 10), size = 10, face = "italic"),
+    axis.title.y = element_text(margin = margin(r = 10), size = 10, face = "italic"),
+    
     panel.grid.major.x = element_blank(),
-    panel.grid.minor.x = element_blank(),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10),
-    legend.position = c(0.4, 0.85),
-    legend.justification = c("right", "bottom"),
+    panel.grid.minor = element_blank(),
+    
+    panel.grid.major.y = element_line(color = "gray85", linewidth = 0.5),
+    
+    # Spostiamo la legenda in basso e gestiamo entrambe le legende (colore linea e colore area)
+    legend.position = "bottom", 
+    legend.direction = "horizontal",
+    legend.box = "horizontal", # Assicura che le legende stiano sulla stessa riga
     legend.title = element_blank(), 
-    legend.background = element_rect(fill = NA, color = NA) 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "white", color = NA),
+    
+    plot.margin = margin(t = 0, r = 0, b = 0, l = 0),
+    plot.background = element_rect(fill = "white", color = NA)
   )
-
 ```
 
 

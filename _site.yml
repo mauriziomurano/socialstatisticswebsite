@@ -4,10 +4,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Articoli Precedenti"
-      href: grafico_uno.html
+    - text: "Approfondimenti"
+      href: Approfondimenti.html
     - text: "Archivio"
-      href: grafico_due.html
+      href: Archivio.html
   right:
     - icon: fa-github
       href: https://github.com/mauriziomurano/socialstatisticswebsite
