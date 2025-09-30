@@ -25,6 +25,7 @@ library(ggplot2)
 library(tibble)
 library(dplyr)
 library(stringr) # Necessario per la funzione str_wrap
+library(scales) # Necessario per la formattazione dell'asse Y
 
 dataset <- tribble(
   ~Categoria,                 ~Valore,
@@ -42,34 +43,43 @@ dataset <- tribble(
 # 1. Preparazione dei Dati (Etichetta e Formattazione)
 dataset <- dataset %>%
   mutate(
-    # Etichetta sopra le barre: Milioni per valori >= 1M, altrimenti valore intero formattato
+    # Etichetta sopra/accanto alle barre: Milioni (M) per valori >= 1M, altrimenti valore intero formattato
     Etichetta_Formattata = case_when(
       Valore >= 1000000 ~ paste0(round(Valore / 1000000, 1), "M"),
       TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
     ),
-    # Nuova colonna per l'etichetta dell'asse X con a capo
-    Categoria_Wrapped = str_wrap(Categoria, width = 8) # Larghezza massima di 15 caratteri per riga
+    # Nuova colonna per l'etichetta dell'asse Y (ex asse X), con a capo se lunga.
+    # Ho aumentato width a 20 per dare più spazio al testo lungo, puoi aggiustarlo.
+    Categoria_Wrapped = str_wrap(Categoria, width = 20) 
   )
 
-# Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
-dataset$Categoria_Wrapped <- factor(
-  dataset$Categoria_Wrapped, 
-  levels = str_wrap(dataset$Categoria, width = 8)
-)
+# Ordina le categorie per l'asse Y (che prima era X).
+# Mantenere l'Ordine Originale dei Dati
+dataset <- dataset %>%
+  # Rimuovi arrange(Valore)
+  mutate(
+    Categoria_Wrapped = factor(
+      Categoria_Wrapped, 
+      # Utilizza rev() per invertire l'ordine dei livelli. Questo fa sì che la prima riga del
+      # tuo dataset appaia in cima al grafico orizzontale.
+      levels = rev(Categoria_Wrapped)
+    )
+  )
 
 # Grafico statico con le etichette corrette
 ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
   geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
   geom_text(
-    # Usa la colonna formattata per le etichette sopra le barre
+    # Etichette delle barre (ora saranno a destra delle barre)
     aes(label = Etichetta_Formattata),
-    vjust = -0.7,
+    hjust = -0.1, # vjust diventa hjust per le barre orizzontali (spostato a destra)
     size = 4,
     family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
-    limits = c(0, max(dataset$Valore) * 1.15),
+    # L'asse Y diventa l'asse numerico (ora orizzontale)
+    limits = c(0, max(dataset$Valore) * 1.25), # Aumentato un po' il limite per le etichette
     expand = c(0, 0),
     labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
     name = " "
@@ -78,14 +88,18 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
   theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
-    # Rimosso angle = 45, perché il testo va a capo
-    axis.text.x = element_text(hjust = 0.5, size = 10, color = "grey20"), 
-    axis.text.y = element_text(size = 8, color = "grey20"),
-    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
-    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
-  )
+    panel.grid.major.x = element_line(color = "grey", linetype = "dotted"), # La griglia X è quella dei valori
+    panel.grid.major.y = element_blank(), # La griglia Y è quella delle categorie
+    
+    # Ora axis.text.y è per le categorie (ex X), axis.text.x è per i valori (ex Y)
+    axis.text.x = element_text(size = 8, color = "grey20"), # Ex axis.text.y
+    axis.text.y = element_text(hjust = 1, size = 10, color = "grey20"), # Ex axis.text.x, allineato a destra
+    
+    axis.title.x = element_text(size = 12, color = "black", face = "plain"), # Titolo per l'asse dei valori
+    axis.title.y = element_blank(), # Rimuovi il titolo per le categorie
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 0) # Aggiustato i margini
+  ) +
+  coord_flip() # Trasforma il grafico in orizzontale
 ```
 
 
@@ -102,6 +116,7 @@ library(ggplot2)
 library(tibble)
 library(dplyr)
 library(stringr) # Necessario per la funzione str_wrap
+library(scales) # Necessario per la formattazione dell'asse Y
 
 dataset <- tribble(
   ~Categoria,                 ~Valore,
@@ -121,34 +136,43 @@ dataset <- tribble(
 # 1. Preparazione dei Dati (Etichetta e Formattazione)
 dataset <- dataset %>%
   mutate(
-    # Etichetta sopra le barre: Milioni per valori >= 1M, altrimenti valore intero formattato
+    # Etichetta sopra/accanto alle barre: Milioni (M) per valori >= 1M, altrimenti valore intero formattato
     Etichetta_Formattata = case_when(
       Valore >= 1000000 ~ paste0(round(Valore / 1000000, 1), "M"),
       TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
     ),
-    # Nuova colonna per l'etichetta dell'asse X con a capo
-    Categoria_Wrapped = str_wrap(Categoria, width = 8) # Larghezza massima di 15 caratteri per riga
+    # Nuova colonna per l'etichetta dell'asse Y (ex asse X), con a capo se lunga.
+    # Ho aumentato width a 20 per dare più spazio al testo lungo, puoi aggiustarlo.
+    Categoria_Wrapped = str_wrap(Categoria, width = 20) 
   )
 
-# Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
-dataset$Categoria_Wrapped <- factor(
-  dataset$Categoria_Wrapped, 
-  levels = str_wrap(dataset$Categoria, width = 8)
-)
+# Ordina le categorie per l'asse Y (che prima era X).
+# Mantenere l'Ordine Originale dei Dati
+dataset <- dataset %>%
+  # Rimuovi arrange(Valore)
+  mutate(
+    Categoria_Wrapped = factor(
+      Categoria_Wrapped, 
+      # Utilizza rev() per invertire l'ordine dei livelli. Questo fa sì che la prima riga del
+      # tuo dataset appaia in cima al grafico orizzontale.
+      levels = rev(Categoria_Wrapped)
+    )
+  )
 
 # Grafico statico con le etichette corrette
 ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
   geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
   geom_text(
-    # Usa la colonna formattata per le etichette sopra le barre
+    # Etichette delle barre (ora saranno a destra delle barre)
     aes(label = Etichetta_Formattata),
-    vjust = -0.7,
+    hjust = -0.1, # vjust diventa hjust per le barre orizzontali (spostato a destra)
     size = 4,
     family = "Arial"
   ) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") + 
   scale_y_continuous(
-    limits = c(0, max(dataset$Valore) * 1.15),
+    # L'asse Y diventa l'asse numerico (ora orizzontale)
+    limits = c(0, max(dataset$Valore) * 1.25), # Aumentato un po' il limite per le etichette
     expand = c(0, 0),
     labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
     name = " "
@@ -157,14 +181,18 @@ ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
   theme_minimal(base_family = "Arial") +
   theme(
     plot.background = element_rect(fill = "white", color = NA),
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
-    # Rimosso angle = 45, perché il testo va a capo
-    axis.text.x = element_text(hjust = 0.5, size = 10, color = "grey20"), 
-    axis.text.y = element_text(size = 8, color = "grey20"),
-    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
-    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
-  )
+    panel.grid.major.x = element_line(color = "grey", linetype = "dotted"), # La griglia X è quella dei valori
+    panel.grid.major.y = element_blank(), # La griglia Y è quella delle categorie
+    
+    # Ora axis.text.y è per le categorie (ex X), axis.text.x è per i valori (ex Y)
+    axis.text.x = element_text(size = 8, color = "grey20"), # Ex axis.text.y
+    axis.text.y = element_text(hjust = 1, size = 10, color = "grey20"), # Ex axis.text.x, allineato a destra
+    
+    axis.title.x = element_text(size = 12, color = "black", face = "plain"), # Titolo per l'asse dei valori
+    axis.title.y = element_blank(), # Rimuovi il titolo per le categorie
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 0) # Aggiustato i margini
+  ) +
+  coord_flip() # Trasforma il grafico in orizzontale
 ```
 
 
