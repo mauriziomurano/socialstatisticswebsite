@@ -2,23 +2,41 @@
 title: "Statistiche Sociali e Geopolitiche"
 output: 
   html_document:
-    # Usa un tema semplice, poi lo sovrascriviamo con CSS
+    # Rimuove il tema R Markdown per un controllo totale tramite CSS
     theme: null
 header-includes:
-  - \usepackage{amsmath} # Questo è solo un esempio per un ambiente LaTeX
-  # Codice CSS per forzare il font 'Times New Roman' o un generico 'serif'
-  - \begin{document}\pagestyle{plain}\end{document}
-  - \begin{document}\maketitle\end{document}
   - |
     <style>
-      /* Font per il corpo del testo e titoli */
-        body, h1, h2, h3, h4 {
-    font-family: "Georgia", "Times New Roman", Times, serif;
-    line-height: 1.6;
-     }
-    h1, h2, h3, h4 {
-    font-weight: bold;
-    }
+      /* Stile del Contenitore Principale (Centratura e Margini Responsive) */
+      .main-container {
+        /* Larghezza massima ideale per la lettura su desktop */
+        max-width: 1000px !important; 
+        /* Centra il contenitore orizzontalmente */
+        margin: 0 auto !important; 
+        /* Padding generico per tutti i dispositivi: 30px sopra/sotto, 15px ai lati */
+        padding: 30px 15px; 
+      }
+      /* FONT: Forza un font serif (tipo Times New Roman/Georgia) per il look LaTeX */
+      body, h1, h2, h3, h4 {
+        font-family: "Georgia", "Times New Roman", Times, serif;
+        line-height: 1.6; /* Interlinea classica */
+        /* Dimensione base del font leggermente più grande per leggibilità PC */
+        font-size: 16px;
+      }
+      h1, h2, h3, h4 {
+        font-weight: bold;
+      }
+      code {
+        /* Mantiene la leggibilità del codice con un font monospace */
+        font-family: 'Courier New', Courier, monospace;
+      }
+      /* MEDIA QUERY per dispositivi più grandi (PC/Tablet) - Aumenta i margini laterali */
+      @media (min-width: 768px) {
+        .main-container {
+          padding-left: 50px !important; /* Margine laterale più ampio sui PC */
+          padding-right: 50px !important;
+        }
+      }
     </style>
 ---
 
