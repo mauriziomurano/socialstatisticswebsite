@@ -68,20 +68,6 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill
   )
 ```
 
----
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ---
 
