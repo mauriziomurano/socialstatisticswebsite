@@ -15,36 +15,54 @@ Il sito raccoglie analisi statistiche su temi di rilevanza sociale e geopolitica
 
 ---
 
-## GRAFICO
+## Vittime in contesti di conflitto
 
-
+Il grafico presenta un confronto quantitativo immediato di diverse categorie, mescolando dati relativi alle vittime in contesti di conflitto recenti e storici con la dimensione delle popolazioni coinvolte. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
 
 library(ggplot2)
 library(tibble)
+library(dplyr)
+library(stringr) # Necessario per la funzione str_wrap
 
 dataset <- tribble(
-  ~Categoria,           ~Valore,
-  "Soldati russi caduti Mag 25", 250000 ,
-  "Soldati ucraini caduti Mag 25",  80000,
-  "Civili ucraini caduti Mag 25",  13000,
-  "Popolazione palestinese",  5000000,
-  "Vittime palestinesi Mag 25",  62000,
-  "Popolazione armena",  1800000,
-  "Vittime armene 15-23",  1500000,
-  "Popolazione ebrea in Europa 1939",  7000000, 
-  "Vittime ebree dell'olocausto",  6000000, 
+  ~Categoria,                 ~Valore,
+  "Soldati russi caduti Mag 25", 250000,
+  "Soldati ucraini caduti Mag 25", 80000,
+  "Civili ucraini caduti Mag 25", 13000,
+  "Popolazione palestinese", 5000000,
+  "Vittime palestinesi Mag 25", 62000,
+  "Popolazione armena", 1800000,
+  "Vittime armene 15-23", 1500000,
+  "Popolazione ebrea in Europa 1939", 7000000, 
+  "Vittime ebree dell'olocausto", 6000000
 )
 
-# Ordina per categoria (come in plotly)
-dataset$Categoria <- factor(dataset$Categoria, levels = dataset$Categoria)
+# 1. Preparazione dei Dati (Etichetta e Formattazione)
+dataset <- dataset %>%
+  mutate(
+    # Etichetta sopra le barre: Milioni per valori >= 1M, altrimenti valore intero formattato
+    Etichetta_Formattata = case_when(
+      Valore >= 1000000 ~ paste0(round(Valore / 1000000, 1), "M"),
+      TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
+    ),
+    # Nuova colonna per l'etichetta dell'asse X con a capo
+    Categoria_Wrapped = str_wrap(Categoria, width = 14) # Larghezza massima di 15 caratteri per riga
+  )
 
-# Grafico statico con sfumature di colore basate sul valore
-ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill = Categoria a fill = Valore
-  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) + # show.legend = TRUE per la barra del colore
+# Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
+dataset$Categoria_Wrapped <- factor(
+  dataset$Categoria_Wrapped, 
+  levels = str_wrap(dataset$Categoria, width = 14)
+)
+
+# Grafico statico con le etichette corrette
+ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
   geom_text(
-    aes(label = Valore),
+    # Usa la colonna formattata per le etichette sopra le barre
+    aes(label = Etichetta_Formattata),
     vjust = -0.7,
     size = 4,
     family = "Arial"
@@ -53,6 +71,7 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill
   scale_y_continuous(
     limits = c(0, max(dataset$Valore) * 1.15),
     expand = c(0, 0),
+    labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
     name = " "
   ) +
   labs(x = NULL) +
@@ -61,7 +80,8 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill
     plot.background = element_rect(fill = "white", color = NA),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "grey20"),
+    # Rimosso angle = 45, perché il testo va a capo
+    axis.text.x = element_text(hjust = 0.5, size = 10, color = "grey20"), 
     axis.text.y = element_text(size = 8, color = "grey20"),
     axis.title.y = element_text(size = 12, color = "black", face = "plain"),
     plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
@@ -70,6 +90,90 @@ ggplot(dataset, aes(x = Categoria, y = Valore, fill = Valore)) + # Cambiato fill
 
 
 ---
+
+
+## Vittime (civili e militari) in una serie di conflitti e genocidi storici
+
+Il grafico presenta una comparazione quantitativa delle stime delle vittime (civili e militari) in una serie di conflitti e genocidi storici e contemporanei, evidenziando le estreme differenze di scala che caratterizzano la violenza umana.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=5, out.width="100%", fig.align="left"}
+
+library(ggplot2)
+library(tibble)
+library(dplyr)
+library(stringr) # Necessario per la funzione str_wrap
+
+dataset <- tribble(
+  ~Categoria,                 ~Valore,
+  "Olocausto (1941-1945)", 6000000,
+  "Genocidio armeno (1915-1923)", 2500000,
+  "Genocidio del Ruanda (1994)", 800000,
+  "Genocidio cambogiano (1975-1979)", 1500000,
+  "Vittime palestinesi Mag 25", 62000,
+  "Seconda Guerra Mondiale", 70000000,
+  "Prima Guerra Mondiale", 16000000,
+  "Conflitto in Etiopia", 100000, 
+  "Guerra in Siria", 500000, 
+  "Guerra in Yemen", 18000,
+
+)
+
+# 1. Preparazione dei Dati (Etichetta e Formattazione)
+dataset <- dataset %>%
+  mutate(
+    # Etichetta sopra le barre: Milioni per valori >= 1M, altrimenti valore intero formattato
+    Etichetta_Formattata = case_when(
+      Valore >= 1000000 ~ paste0(round(Valore / 1000000, 1), "M"),
+      TRUE ~ format(Valore, big.mark = ".", scientific = FALSE)
+    ),
+    # Nuova colonna per l'etichetta dell'asse X con a capo
+    Categoria_Wrapped = str_wrap(Categoria, width = 14) # Larghezza massima di 15 caratteri per riga
+  )
+
+# Ordina per la categoria originale, ma usa la colonna wrapped nel grafico
+dataset$Categoria_Wrapped <- factor(
+  dataset$Categoria_Wrapped, 
+  levels = str_wrap(dataset$Categoria, width = 14)
+)
+
+# Grafico statico con le etichette corrette
+ggplot(dataset, aes(x = Categoria_Wrapped, y = Valore, fill = Valore)) +
+  geom_col(color = "grey30", width = 0.7, show.legend = FALSE) +
+  geom_text(
+    # Usa la colonna formattata per le etichette sopra le barre
+    aes(label = Etichetta_Formattata),
+    vjust = -0.7,
+    size = 4,
+    family = "Arial"
+  ) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") + 
+  scale_y_continuous(
+    limits = c(0, max(dataset$Valore) * 1.15),
+    expand = c(0, 0),
+    labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
+    name = " "
+  ) +
+  labs(x = NULL) +
+  theme_minimal(base_family = "Arial") +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "grey", linetype = "dotted"),
+    # Rimosso angle = 45, perché il testo va a capo
+    axis.text.x = element_text(hjust = 0.5, size = 10, color = "grey20"), 
+    axis.text.y = element_text(size = 8, color = "grey20"),
+    axis.title.y = element_text(size = 12, color = "black", face = "plain"),
+    plot.margin = margin(t = 20, r = 20, b = 60, l = 0)
+  )
+```
+
+
+---
+
+
+
+
+
 
 ## Donne che hanno subito violenza fisica da un partner intimo
 
